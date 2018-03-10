@@ -12,3 +12,65 @@
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
+
+  @KBD
+  D=A
+  @screenEnd
+  M=D
+
+  @prevColor
+  M=0
+
+  @color
+  M=0
+
+(LISTEN)
+  @SCREEN
+  D=A
+  @current
+  M=D
+
+  @KBD
+  D=M
+  @PRESSED
+  D;JGT
+
+  @color
+  D=M
+  @LISTEN
+  D;JEQ // if color is still white jump to listen
+
+  @color
+  M=0
+  @FILL
+  0;JMP
+
+(PRESSED)
+  @color
+  D=M
+  @LISTEN // if color is still black jump to listen
+  D;JLT
+
+  @color
+  M=-1
+
+(FILL)
+   @screenEnd
+   D=M
+   @current
+   D=D-M
+   @LISTEN
+   D;JEQ
+
+   @color
+   D=M
+
+   @current
+   A=M
+   M=D
+
+   @current
+   M=M+1
+
+   @FILL
+   0;JMP
